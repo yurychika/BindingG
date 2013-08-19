@@ -11,10 +11,13 @@
 		<script type='text/javascript'>
 			
 			var vm = function(){
-				this.text = gee.observable();
+				this.name = gee.observable(123);
+				
+				
+				this.name(123);
 			};
 			
-			gee.bind(vm);
+			gee.bind(new vm());
 		</script>		
 		
 	</body>
