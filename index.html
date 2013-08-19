@@ -1,0 +1,22 @@
+<!doctype html>
+<html>
+	<head>
+		<script type='text/javascript' src = 'gee.js'></script>
+
+	</head>
+	
+	<body>
+		<p data-bind="text:name">this is the new shit</p>
+		
+		<script type='text/javascript'>
+			
+			var vm = function(){
+				this.text = gee.observable();
+			};
+			
+			gee.bind(vm);
+		</script>		
+		
+	</body>
+	
+</html>
