@@ -1,6 +1,10 @@
 <!doctype html>
 <html>
 	<head>
+		<script type='text/javascript'>
+			console.log(123)			
+					
+		</script>
 		<script type='text/javascript' src = 'gee.js'></script>
 
 	</head>
@@ -9,15 +13,19 @@
 		<p data-bind="text:name">this is the new shit</p>
 		
 		<script type='text/javascript'>
+			console.log(123	)
 			
 			var vm = function(){
 				this.name = gee.observable(123);
 				
 				
-				this.name(123);
+				// this.name(123);
 			};
 			
-			gee.bind(new vm());
+			viewModel = new vm();
+			console.log(viewModel)
+			
+			gee.bind(viewModel);
 		</script>		
 		
 	</body>

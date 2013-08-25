@@ -2,15 +2,33 @@ var gee = {
 	viewModelList: [],
 	
 	observable: function(initialValue){
+		var self = this;
+		
+		var meta = {};
+		
+		
 		var func = function(){
-			if(arguments.length == 0){
-				return this.__value;
-			}else{
-				this.__value = arguments[0];
+			console.log('this is', this)
+			if(arguments.length == 0){		//get
+				return meta.__value;
+			}else{		//set
+				var v = meta.__value = arguments[0];
+				// var observers = meta.__observers = meta.__observers === undefined? [] : this.__observers;
+				var observers = meta.__observers;
+				
+				for(var i = 0; i < observers.length; i++){
+					var ob = observers[i],
+						node = ob.node,
+						type = ob.type;
+						
+					self._updateDom(node, type, v);
+				}
 			}
 		};
-		func.__value = initialValue;
-		func.__observers = [];
+		
+		meta.__value = initialValue;
+		meta.__observers = [];
+		func._meta = meta;
 		return func;
 	},
 	
@@ -30,17 +48,18 @@ var gee = {
 			if(dataBindAttr){
 				// var as = JSON.parse(dbAttr);	//attributes
 				var as = this._parseAttribute(dataBindAttr);
-				for(var i in as){
+				for(var k in as){
+					var v = as[k];
 					console.log(viewModel)
-					console.log(as[i])
-					if(viewModel.hasOwnProperty(as[i])){
+					console.log(v)
+					if(viewModel.hasOwnProperty(v)){
 						console.log('vm is' + viewModel);
-						viewModel[as[i]].__observers.push({node: t, type: i});		//add observers to the specific function
+						console.log(viewModel)
+						console.log(viewModel['name'].__observers)
+						viewModel[v]._meta.__observers.push({node: t, type: k});		//add observers to the specific function
 						
-						if(i == 'text'){
-							console.log(123)
-							var observable = viewModel[as[i]];
-							console.log(t);
+						if(k == 'text'){
+							var observable = viewModel[v];
 							t.innerHTML = observable.apply(observable, []);
 						}
 					}
@@ -64,20 +83,25 @@ var gee = {
 		}
 		
 		return obj;
+	},
+	
+	_updateDom: function(node, type, value){
+		console.log('in update dom')
+		console.log(arguments)
+		switch(type.toLowerCase()){
+			case 'text':
+				node.innerHTML = value;
+				break;
+			case 'value':
+			
+				break;
+			case 'foreach':
+			
+				break;
+			
+		}
+		
+		
 	}
-	
-	
-	
-	
-	
-	
-
-
-
-
-
-
-
-	
 	
 }
